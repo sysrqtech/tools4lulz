@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Бан-лист</title>
+    <link rel="icon" sizes="192x192" href="/static/favicon_png_chrome.png">
+    <script defer data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.3/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-blue.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&subset=cyrillic">
+</head>
+<body>
+    <table class="mdl-data-table mdl-js-data-table" style="width: 100%;">
+        <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Нарушитель</th>
+              <th class="mdl-data-table__cell--non-numeric">Причина</th>
+              <th class="mdl-data-table__cell--non-numeric">Злой модер</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_id, v in db %}:
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">
+                      <a href="https://vk.com/id{{user_id}}">{{v.name}}</a>
+                  </td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                      {{v.reason}}
+                  </td>
+                  <td class="mdl-data-table__cell--non-numeric">
+                      {{v.banner}}
+                  </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

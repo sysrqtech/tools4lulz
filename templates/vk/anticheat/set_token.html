@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Переадресация...</title>
+    <script>
+        localStorage.setItem("token", {{ token|tojson }})
+        window.location.replace({{ url_for("vk.anticheat", _external=True)|tojson }})
+    </script>
+</head>
+<body>
+</body>
+</html>

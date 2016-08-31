@@ -1,0 +1,32 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {packages: ['corechart'], language: 'ru'})
+        google.charts.setOnLoadCallback(drawChart)
+        
+        function drawChart() {
+            var options = {
+                title: 'Голоса только от участников',
+                animation: {"startup": true}
+            }
+            var data = new google.visualization.DataTable()
+            var chart = new google.visualization.BarChart(document.getElementById('anticheat'))
+            data.addColumn('string', 'Вариант')
+            data.addColumn('number', 'Голоса')
+            data.addColumn({type: 'string',
+                            role: 'annotation'})
+            data.addRows({{ data|safe }})
+
+            chart.draw(data, options)
+        }
+        localStorage.removeItem("token")
+    </script>
+    <title>Анти-накрутка</title>
+</head>
+<body>
+    <div id="anticheat" style="width: 100%; height: {{height}}px;"></div>
+</body>
+</html>

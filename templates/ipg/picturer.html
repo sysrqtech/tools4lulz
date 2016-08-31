@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<!--suppress LongLine -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Пикчер</title>
+    <link rel="icon" sizes="192x192" href="/static/favicon_png_chrome.png">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.3/dialog-polyfill.min.js"></script>
+    <script defer data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.3/material.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.12/clipboard.min.js"></script>
+    <script src="/js/picturer.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-blue.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.3/dialog-polyfill.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&subset=cyrillic">
+    <link rel="stylesheet" href="/css/picturer.css">
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Автоматический пикчер</span>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <div class="mdl-card" style="width: 100%;">
+                    <div class="mdl-card__supporting-text">
+                        <form action="/ipg/picturer/gen" method="post" target="_blank" id="go">
+                            <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                                <div class="mdl-tabs__tab-bar">
+                                    <a href="#picture" class="mdl-tabs__tab is-active">
+                                        Изображение
+                                    </a>
+                                    <a href="#font" class="mdl-tabs__tab">
+                                        Надпись
+                                    </a>
+                                </div>
+                                <div class="mdl-tabs__panel is-active" id="picture">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="url"
+                                               id="link" name="link" />
+                                        <label class="mdl-textfield__label" for="link">
+                                            Ссылка на пикчу
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text"
+                                               id="message" name="message" />
+                                        <label class="mdl-textfield__label" for="message">
+                                            Текст
+                                        </label>
+                                    </div>
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="watermark">
+                                        <input class="mdl-switch__input" type="checkbox"
+                                               id="watermark" name="watermark" checked>
+                                        <span class="mdl-switch__label">
+                                            Ватермарка ИПГ
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="mdl-tabs__panel" id="font">
+                                    <div style="width: 35%;">
+                                        <input class="mdl-slider mdl-js-slider" type="range"
+                                               min="0" max="300" value="120"
+                                               tabindex="0" id="font_slider" name="font_slider" />
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="number"
+                                               min="0" max="300" value="120"
+                                               id="size" name="size">
+                                        <label class="mdl-textfield__label" for="size">
+                                            Размер шрифта
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="top">
+                                        <input type="radio" id="top" class="mdl-radio__button"
+                                               name="align" value="top">
+                                        <i class="mdl-radio__label material-icons">
+                                            &#xE25A;
+                                        </i>
+                                    </label>
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="bottom">
+                                        <input type="radio" id="bottom" class="mdl-radio__button"
+                                               name="align" value="bottom" checked>
+                                        <i class="mdl-radio__label material-icons">
+                                            &#xE258;
+                                        </i>
+                                    </label>
+                                </div>
+                                <br>
+                                <br>
+                                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                                    Сгенерировать!
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">
+                    Разработано <a href="https://vk.com/go_up4k" target="_blank">UP4K</a>
+                </div>
+            </div>
+            <div class="mdl-mini-footer__right-section">
+                <div class="mdl-logo">
+                    Мы - не путь. Мы - перекрёсток для всех.
+                </div>
+            </div>
+        </footer>
+    </div>
+    <dialog class="flexible-dialog" id="view">
+        <h4 class="mdl-dialog__title">Предпросмотр</h4>
+        <div class="mdl-dialog__content" style="text-align: center;">
+            <div class="mdl-spinner mdl-js-spinner is-active" id="loading" style="margin: auto;"></div>
+            <img src="" id="result_image" class="result">
+        </div>
+        <div class="mdl-dialog__actions mdl-dialog__actions">
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect" id="copy_link">Скопировать</button>
+            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect close" id="close_dialog">Закрыть</button>
+        </div>
+    </dialog>
+</body>
+</html>

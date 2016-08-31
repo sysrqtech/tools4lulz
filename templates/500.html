@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Возникла ошибка</title>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,500&subset=cyrillic" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f44336;
+            }
+            
+            .error-top {
+                margin-top: 5%;
+                font-weight: 100;
+                color: #fff;
+                font-size: 50pt;
+                text-align: center;
+            }
+
+            .errornumhide {
+                -webkit-perspective: 1000px;
+                perspective: 1000px;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+                left: 50%;
+                top: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                cursor: pointer;
+            }
+            .card {
+                position: relative;
+                height: 100%;
+                width: 100%;
+                -webkit-transform-style: preserve-3d;
+                transform-style: preserve-3d;
+                -webkit-transition: all 600ms;
+                transition: all 600ms;
+                z-index: 20;
+            }
+
+                .card div {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    text-align: center;
+                    line-height: 200px;
+                    -webkit-backface-visibility: hidden;
+                    backface-visibility: hidden;
+                    margin-top: -40px;
+                    font-weight: 500;
+                    color: #fff;
+                    font-size: 80pt;
+                    -moz-user-select: -moz-none;
+                    -o-user-select: none;
+                    -khtml-user-select: none;
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
+
+                .card .back {
+                    -webkit-transform: rotateX(180deg);
+                    transform: rotateX(180deg);
+                    margin-top: 40px;
+                    font-weight: 400;
+                    color: #fff;
+                    font-size: 107pt;
+                    text-align: center;
+                    -moz-user-select: -moz-none;
+                    -o-user-select: none;
+                    -khtml-user-select: none;
+                    -webkit-user-select: none;
+                    user-select: none;
+                }
+
+            .errornumhide:hover .card {
+                -webkit-transform: rotateX(20deg);
+                transform: rotateX(20deg);
+            }
+
+            .flipper {
+                display: none;
+            }
+
+            :checked + .card {
+                transform: rotateX(180deg);
+                -webkit-transform: rotateX(180deg);
+            }
+
+            .errornumhide:hover :checked + .card {
+                transform: rotateX(160deg);
+                -webkit-transform: rotateX(160deg);
+            }
+            
+            .error-log {
+                overflow-y: auto;
+                margin-top: 30px;
+                font-weight: 100;
+                background-color: #f54e40;
+                color: #fff;
+                padding: 10px;
+                font-size: 14pt;
+                height: 200px;
+            }
+
+            .error-spoiler {
+                margin-top: 155px;
+                margin-left: 20%;
+                margin-right: 20%;
+                font-weight: 100;
+                border-radius: 10px;
+                padding: 10px;
+                font-size: 28pt;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+            .error-spoiler ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .error-spoiler li {
+                margin: 0;
+                padding: 0;
+            }
+            .error-spoiler [type=radio], .error-spoiler [type=checkbox] {
+                display: none;
+            }
+            .error-spoiler label {
+                font-size: 28px;
+                color: #fff;
+                -moz-user-select: -moz-none;
+                -o-user-select: none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            .error-spoiler .content {
+                height: 100%;
+                padding: 0 10px;
+                overflow: hidden;
+                -webkit-transition: all .5s ease-out;
+                -moz-transition: all .5s ease-out;
+            }
+
+            .vertical ul li {
+                overflow: hidden;
+                margin: 0 0 1px;
+            }
+            .vertical [type=radio]:checked ~ label, .vertical [type=checkbox]:checked ~ label {
+                border-bottom: 0;
+            }
+            .vertical ul li .content {
+                height: 0;
+                border-top: 0;
+                transition: all .5s ease-out;
+            }
+            .vertical [type=checkbox]:checked ~ label ~ .content {
+                height: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="error-top">Ошибка</div>
+        <label class="errornumhide">
+            <input type="checkbox" class="flipper" />
+            <div class="card">
+                <div class="front">¯\_(ツ)_/¯</div>
+                <div class="back">500</div>
+            </div>
+        </label>
+        <div class="error-spoiler vertical">
+            <ul>
+                <li>
+                    <input type="checkbox" id="checkbox-log" name="log" />
+                    <label for="checkbox-log">{{text}}</label>
+                    <div class="content">п
+                        <div class="error-log">{{log|safe}}</div>
+                    </div>
+                 </li>
+             </ul>
+        </div>
+    </body>
+</html>

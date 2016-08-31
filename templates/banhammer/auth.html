@@ -1,0 +1,31 @@
+<html>
+<head>
+    <link rel="icon" sizes="192x192" href="/static/favicon_png_chrome.png">
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js"></script>
+    <script type="text/javascript">
+        VK.init({apiId: 5489908});
+    </script>
+    <title>Вход</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="vk_auth"></div>
+    <script type="text/javascript">
+        VK.Widgets.Auth("vk_auth", {width: "300px", authUrl: '/banhammer/auth', "redesign": 1});
+    </script>
+</body>
+</html>

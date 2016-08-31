@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Анти-накрутка</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <script type="text/javascript">
+        if (!localStorage.getItem("token")) {
+            window.location.replace("https://oauth.vk.com/authorize?client_id=5489908&display=page" +
+                                    "&redirect_uri=" + {{ url_for("vk.anticheat_oauth", _external=True)|tojson }} +
+                                    "&scope=wall,groups,offline&response_type=code&v=5.53")
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <form action="/vk/anticheat/results" method="post" target="_blank">
+            <table>
+                <tbody>
+                    <h3>Анти-накрутка</h3>
+                </tbody>
+                <tr>
+                    <div class="row uniform">
+                        <div class="6u 12u(xsmall)">
+                            <input name="link" type="text" id="link" placeholder="Ссылка" />
+                        </div>
+                        <input type="hidden" name="token" id="token" value="">
+                    </div>
+                </tr><tr>
+                    <div class="row uniform">
+                        <div class="12u">
+                            <input value="Просмотр" class="special" type="submit" />
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </form>
+        <center>
+            <a href="https://vk.com/go_up4k" target="_blank">UP4K Tools</a>
+            <h6>Мы — UP4K. Мы — программа. Мы не ограничиваем. Мы не освобождаем. Ждите нас...</h6>
+        </center>
+    </div>
+    <script>
+        document.getElementById("token").value = localStorage.getItem("token")
+    </script>
+</body>
+</html>

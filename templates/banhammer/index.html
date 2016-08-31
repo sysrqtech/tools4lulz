@@ -1,0 +1,100 @@
+<!--suppress LongLine -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Секретный банхаммер</title>
+    <link rel="icon" sizes="192x192" href="/static/favicon_png_chrome.png">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script defer data-cfasync="false" src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.3/material.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ns-autogrow/1.1.4/jquery.ns-autogrow.min.js"></script>
+    <script src="/js/banhammer.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-blue.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&subset=cyrillic">
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Секретный банхаммер</span>
+            </div>
+        </header>
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <div class="mdl-card" style="width: 100%;">
+                    <div class="mdl-card__supporting-text">
+                        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+                            <div class="mdl-tabs__tab-bar">
+                                <a href="#ban_user" class="mdl-tabs__tab is-active">
+                                    Забанить
+                                </a>
+                                <a href="#unban_user" class="mdl-tabs__tab">
+                                    Разбанить
+                                </a>
+                            </div>
+                            <div class="mdl-tabs__panel is-active" id="ban_user">
+                                <form action="/banhammer/ban" method="post" id="ban">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <textarea class="mdl-textfield__input" type="url" id="ban_link" name="link" rows="1"></textarea>
+                                        <label class="mdl-textfield__label" for="ban_link">
+                                            Ссылки на нарушителей
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="reason" name="reason" />
+                                        <label class="mdl-textfield__label" for="reason">
+                                            Причина
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="hash" value="{{auth_hash}}">
+                                    <input type="hidden" name="name" value="{{name}}">
+                                    <div class="mdl-card__actions">
+                                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect">
+                                            Казнить
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="mdl-tabs__panel" id="unban_user">
+                                <form action="/banhammer/unban" method="post" id="unban">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="url" id="unban_link" name="link" />
+                                        <label class="mdl-textfield__label" for="unban_link">
+                                            Ссылка на юзера
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="hash" value="{{auth_hash}}">
+                                    <input type="hidden" name="name" value="{{name}}">
+                                    <div class="mdl-card__actions">
+                                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect">
+                                            Помиловать
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">
+                    <a href="/banhammer/list" target="_blank">Бан-лист</a>
+                </div>
+            </div>
+            <div class="mdl-mini-footer__right-section">
+                <div class="mdl-logo">
+                    Под стражей своего горящего пукана.
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div id="result_toast" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+</body>
+</html>
