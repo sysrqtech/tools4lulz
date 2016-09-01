@@ -68,7 +68,7 @@ class TracebackFlask(Flask):
         return handler(e, tb)  # don't forget traceback argument in your handler!
 
 
-app = TracebackFlask(__name__)
+app = application = TracebackFlask(__name__)
 app.config.from_pyfile('flask.cfg')
 
 config = configparser.ConfigParser()

@@ -4,6 +4,7 @@
 # This file may be used instead of Apache mod_wsgi to run your python
 # web application in a different framework.
 
+import imp
 import os
 import sys
 
@@ -21,19 +22,4 @@ except IOError:
 # line, it's possible required libraries won't be in your searchable path
 #
 
-from flask import Flask
-from . import app
-application = app
-
-# TESTING
-
-if __name__ == '__main__':
-    port = app.config['PORT']
-    ip = app.config['IP']
-    app_name = app.config['APP_NAME']
-    host_name = app.config['HOST_NAME']
-
-    print('Starting Flask WSGIServer on %s:%d ... ' % (ip, port))
-    server = Flask(__name__)
-    server.wsgi_app = app
-    server.run(host=ip, port=port)
+application = app = imp.load_source('app', '__init__.py')
