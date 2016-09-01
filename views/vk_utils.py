@@ -21,8 +21,12 @@ along with SysRq tools4lulz.  If not, see <http://www.gnu.org/licenses/>.
 import requests
 from flask import Blueprint, render_template, request, url_for
 
-from ..modules import general
-from ..modules import vk_utils
+try:
+    from ..modules import general
+    from ..modules import vk_utils
+except ValueError:
+    from modules import general
+    from modules import vk_utils
 
 vk_view = Blueprint('vk', __name__)
 

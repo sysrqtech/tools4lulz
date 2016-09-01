@@ -26,10 +26,16 @@ from flask import Flask, got_request_exception
 from raven.contrib.flask import Sentry
 from werkzeug.exceptions import InternalServerError
 
-from .views import server
-from .views import banhammer
-from .views import vk_utils
-from .views import ipg
+try:
+    from .views import server
+    from .views import banhammer
+    from .views import vk_utils
+    from .views import ipg
+except SystemError:
+    from views import server
+    from views import banhammer
+    from views import vk_utils
+    from views import ipg
 
 
 def reraise(value, tb=None):
@@ -68,7 +74,7 @@ class TracebackFlask(Flask):
         return handler(e, tb)  # don't forget traceback argument in your handler!
 
 
-app = application = TracebackFlask(__name__)
+app = TracebackFlask(__name__)
 app.config.from_pyfile('flask.cfg')
 
 config = configparser.ConfigParser()

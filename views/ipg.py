@@ -20,7 +20,10 @@ along with SysRq tools4lulz.  If not, see <http://www.gnu.org/licenses/>.
 
 from flask import Blueprint, render_template, request
 
-from ..modules import ipg
+try:
+    from ..modules import ipg
+except ValueError:
+    from modules import ipg
 
 ipg_view = Blueprint('ipg', __name__)
 

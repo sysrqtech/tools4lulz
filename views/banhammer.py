@@ -20,7 +20,10 @@ along with SysRq tools4lulz.  If not, see <http://www.gnu.org/licenses/>.
 
 from flask import Blueprint, request, redirect, url_for, render_template, make_response, current_app
 
-from ..modules import banhammer
+try:
+    from ..modules import banhammer
+except ValueError:
+    from modules import banhammer
 
 banhammer_view = Blueprint('banhammer', __name__)
 

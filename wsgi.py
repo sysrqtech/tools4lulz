@@ -1,19 +1,24 @@
 #!/usr/bin/env python
 # coding=utf-8
 
-# This file may be used instead of Apache mod_wsgi to run your python
-# web application in a different framework.
+# Entry point for Apache mod_wsgi
 
-import imp
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(__file__))
+
+virtenv = os.path.join(os.environ.get('OPENSHIFT_PYTHON_DIR', '.'), 'virtenv')
+virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
 try:
-    virtenv = os.path.join(os.environ.get('OPENSHIFT_PYTHON_DIR', '.'), 'virtenv')
-    python_version = "python" + str(sys.version_info[0]) + "." + str(sys.version_info[1])
+    exec_namespace = dict(__file__=virtualenv)
+    with open(virtualenv, 'rb') as exec_file:
+        file_contents = exec_file.read()
+    compiled_code = compile(file_contents, virtualenv, 'exec')
+    exec(compiled_code, exec_namespace)
+
+    python_version = "python{0}.{1}".format(*sys.version_info)
     os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib', python_version, 'site-packages')
-    virtualenv = os.path.join(virtenv, 'bin', 'activate_this.py')
-    exec(open(virtualenv).read(), dict(__file__=virtualenv))
 except IOError:
     pass
 
@@ -22,4 +27,4 @@ except IOError:
 # line, it's possible required libraries won't be in your searchable path
 #
 
-application = app = imp.load_source('app', '__init__.py')
+application = __import__("__init__").app
