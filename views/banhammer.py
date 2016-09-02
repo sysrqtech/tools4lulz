@@ -26,7 +26,7 @@ except ValueError:
     from modules import banhammer
 
 banhammer_view = Blueprint('banhammer', __name__)
-db = banhammer.BannedDB(banhammer_view.open_resource("static/db/banned.json").name)
+db = banhammer.BannedDB(banhammer_view.open_resource("../static/db/banned.json").name)
 
 
 @banhammer_view.route('/list')
