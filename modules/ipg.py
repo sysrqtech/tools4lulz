@@ -32,8 +32,8 @@ from . import general
 
 image_base64 = re.compile(r"^data:image/.+;base64,")
 
-footer = Image.open("static/img/footer.png")
-line = Image.open("static/img/line.png")
+footer = Image.open(general.static + "/img/footer.png")
+line = Image.open(general.static + "/img/line.png")
 
 client_id = "fd74deb2e272b12"
 client_secret = "7f777d5fb7109bacc24e2d1667ed32494a6754a5"

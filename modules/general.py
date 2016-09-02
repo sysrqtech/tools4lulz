@@ -18,6 +18,7 @@ You should have received a copy of the GNU Affero General Public License
 along with SysRq tools4lulz.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+import os
 import time
 import vk
 
@@ -99,3 +100,5 @@ def list_of_str(seq):
 api = SleepAPI(vk.Session(), v="5.53")
 user_agent = {"User-Agent":
               "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"}
+app_root = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+static = os.path.join(app_root, "static")

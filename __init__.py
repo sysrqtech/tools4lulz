@@ -78,7 +78,7 @@ app = TracebackFlask(__name__)
 app.config.from_pyfile('flask.cfg')
 
 config = configparser.ConfigParser()
-config.read("tools4lulz.ini")
+config.read(app.root_path + "/tools4lulz.ini")
 
 sentry_dsn = config["sentry"]["dsn"]
 if not app.debug:
