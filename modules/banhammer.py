@@ -36,74 +36,65 @@ class BanhammerError(Exception):
 
 class BannedDB:
     def __init__(self, filename):
-        self.file = filename
+        self.filename = filename
         self.content = {}
-        if not os.path.isfile(self.file):
-            self.dump()
+        if not os.path.isfile(self.filename):
+            self._dump()
         else:
-            self.reload()
+            self._reload()
 
     def __contains__(self, key):
         return str(key) in self.content
 
-    def reload(self):
-        self.content = json.load(open(self.file))
+    def _reload(self):
+        self.content = json.load(open(self.filename))
 
-    def dump(self):
-        with open(self.file, "w") as f:
-            json.dump(self.content, f)
-        self.reload()
+    def _dump(self):
+        with open(self.filename, "w") as db:
+            json.dump(self.content, db)
+        self._reload()
 
     def add(self, user):
         self.content.update(user)
-        self.dump()
+        self._dump()
 
     def remove(self, user_id):
         self.content.pop(str(user_id))
-        self.dump()
+        self._dump()
 
-db = BannedDB("static/db/banned.json")
+    def list(self):
+        return self.content.items()
 
+    def ban(self, link, reason, moderator):
+        """
+        Ban single user.
+        :param link
+        :param reason
+        :param moderator
+        :return: message to display
+        """
+        user_id = general.api.utils.resolveScreenName(screen_name=link.split("/")[-1])["object_id"]
+        name = "{first_name} {last_name}".format(**general.api.users.get(user_ids=user_id)[0])
+        if user_id not in self:
+            self.add({user_id: {"reason": reason, "name": name, "banner": moderator}})
+            return "Пользователь {} забанен".format(name)
+        return "Пользователь {} уже забанен".format(name)
 
-def check(user_id):
-    return str(int(user_id in db))
-
-
-def list_db():
-    return db.content.items()
-
-
-def ban_user(link, reason, moderator):
-    """
-    Ban single user.
-    :param link
-    :param reason
-    :param moderator
-    :return: message to display
-    """
-    user_id = general.api.utils.resolveScreenName(screen_name=link.split("/")[-1])["object_id"]
-    name = "{first_name} {last_name}".format(**general.api.users.get(user_ids=user_id)[0])
-    if user_id not in db:
-        db.add({user_id: {"reason": reason, "name": name, "banner": moderator}})
-        return "Пользователь {} забанен".format(name)
-    return "Пользователь {} уже забанен".format(name)
-
-
-def unban_user(link):
-    """
-    Unban single user.
-    :param link
-    :return: message to display
-    """
-    user_id = general.api.utils.resolveScreenName(screen_name=link.split("/")[-1])["object_id"]
-    name = "{first_name} {last_name}".format(**general.api.users.get(user_ids=user_id)[0])
-    if user_id in db:
-        db.remove(user_id)
-        return "Пользователь {} разбанен".format(name)
-    return "Пользователь {} не забанен".format(name)
+    def unban(self, link):
+        """
+        Unban single user.
+        :param link
+        :return: message to display
+        """
+        user_id = general.api.utils.resolveScreenName(screen_name=link.split("/")[-1])["object_id"]
+        name = "{first_name} {last_name}".format(**general.api.users.get(user_ids=user_id)[0])
+        if user_id in self:
+            self.remove(user_id)
+            return "Пользователь {} разбанен".format(name)
+        return "Пользователь {} не забанен".format(name)
 
 
-def ban(links: list, reason, *, hash, moderator):
+def ban(db: BannedDB, links: list, reason, *, hash, moderator):
     """
     Ban some users at one time.
     :param links
@@ -115,14 +106,14 @@ def ban(links: list, reason, *, hash, moderator):
     if hash not in hashes:
         return "Операция не позволена"
     if len(links) == 1:
-        return ban_user(links[0], reason, moderator)
+        return db.ban(links[0], reason, moderator)
     else:
         for link in links:
-            ban_user(link, reason, moderator)
+            db.ban(link, reason, moderator)
         return "Пользователи забанены"
 
 
-def unban(links: list, hash):
+def unban(db: BannedDB, links: list, hash):
     """
     Unban some users at one time.
     :param links
@@ -132,8 +123,8 @@ def unban(links: list, hash):
     if hash not in hashes:
         raise BanhammerError("Операция не позволена")
     if len(links) == 1:
-        return unban_user(links[0])
+        return db.unban(links[0])
     else:
         for link in links:
-            unban_user(link)
+            db.unban(link)
         return "Пользователи разбанены"

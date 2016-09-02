@@ -26,16 +26,17 @@ except ValueError:
     from modules import banhammer
 
 banhammer_view = Blueprint('banhammer', __name__)
+db = banhammer.BannedDB(banhammer_view.open_resource("static/db/banned.json").name)
 
 
 @banhammer_view.route('/list')
 def list_banned():
-    return render_template("banhammer/banhammer_list.html", db=banhammer.list_db())
+    return render_template("banhammer/banhammer_list.html", db=db.list())
 
 
 @banhammer_view.route('/check')
 def check_banned():
-    return banhammer.check(request.args["id"])
+    return request.args["id"] in db
 
 
 @banhammer_view.route('/ban', methods=["POST"])
@@ -44,14 +45,14 @@ def ban():
     reason = request.form["reason"].strip()
     auth_hash = request.form["hash"]
     moderator = request.form["name"]
-    return banhammer.ban(links, reason, hash=auth_hash, moderator=moderator)
+    return banhammer.ban(db, links, reason, hash=auth_hash, moderator=moderator)
 
 
 @banhammer_view.route('/unban', methods=["POST"])
 def unban():
     link = request.form["link"]
     auth_hash = request.form["hash"]
-    return banhammer.unban(link, auth_hash)
+    return banhammer.unban(db, link, auth_hash)
 
 
 @banhammer_view.route('/')
