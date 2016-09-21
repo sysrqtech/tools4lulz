@@ -27,6 +27,7 @@ $(document).ready(function(){
     })
 
     go.submit(function(){
+        var error = true
         dialogPolyfill.registerDialog(dialog)
         dialog.showModal()
         $.post(
@@ -37,8 +38,9 @@ $(document).ready(function(){
                 result_image.attr("src", data.link)
                 result_image.css("visibility", "visible")
                 $("#copy_link").attr("data-clipboard-text", data.link)
+                error = false
             }
         )
-        return false
+        return error
     })
 })
