@@ -26,7 +26,7 @@ from werkzeug.exceptions import InternalServerError
 server_view = Blueprint('server', __name__)
 
 
-@server_view.errorhandler(500)
+@server_view.app_errorhandler(500)
 def internal_server_error(error: InternalServerError, tb):
     error_message = str(error)
     error_class = repr(error.__class__())[:-2]
