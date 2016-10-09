@@ -33,14 +33,14 @@ $(document).ready(function(){
         $.post(
             go.attr("action"),
             go.serialize(),
-            function(data, status, xhr){
+            function(data){
                 $("#loading").removeClass("is-active")
-                result_image.attr("src", data.link)
+                result_image.attr("src", data)
                 result_image.css("visibility", "visible")
-                $("#copy_link").attr("data-clipboard-text", data.link)
+                $("#copy_link").attr("data-clipboard-text", data)
                 error = false
             }
         )
-        return error
+        return !error
     })
 })

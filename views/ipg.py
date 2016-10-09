@@ -31,8 +31,8 @@ ipg_view = Blueprint('ipg', __name__)
 @ipg_view.route('/picturer/gen', methods=["POST"])
 def ipg_gen():
     link = request.form["link"]
-    message = request.form["message"]
-    size = request.form["size"] if request.form["size"] else 0
+    message = request.form["message"].replace("\r\n", "\n")
+    size = int(request.form["size"]) if request.form["size"] else 0
     align = request.form["align"]
     mark = bool(request.form["watermark"])
     return ipg.ipg_build(link, message, size, align, mark)

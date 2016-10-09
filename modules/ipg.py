@@ -24,7 +24,6 @@ import time
 import re
 import requests
 from base64 import b64decode
-from textwrap import TextWrapper
 from imgurpython import ImgurClient
 from PIL import Image, ImageFont, ImageDraw
 
@@ -50,22 +49,9 @@ def image_size(url):
     return int(headers.get("Content-Length", 0)) / 1000000
 
 
-def font_width(font_size, image_width):
-    """
-    Calculating 'Pobeda' font width
-    :param font_size
-    :param image_width
-    :return: font size in pt
-    """
-    symbols = image_width // int(font_size * 3.5)
-    if not symbols:
-        symbols = 1
-    return symbols
-
-
 def fit_text(message, *, size, font_size):
     if isinstance(message, str):
-        message = [message]
+        message = message.split("\n")
     font = ImageFont.truetype("static/fonts/pobeda-regular.ttf",
                               size=font_size)
     texts = []
@@ -79,17 +65,10 @@ def fit_text(message, *, size, font_size):
                                                  "height": label_size[1]}})
             else:
                 font_size -= 5
-                return fit_text(
-                    TextWrapper(width=font_width(font_size, size[0]),
-                                break_long_words=False).wrap(
-                        " ".join(message)),
-                    size=size, font_size=font_size)
+                return fit_text(message, size=size, font_size=font_size)
     else:
         font_size -= 5
-        return fit_text(TextWrapper(width=font_width(font_size, size[0]),
-                                    break_long_words=False).wrap(
-            " ".join(message)),
-            size=size, font_size=font_size)
+        return fit_text(message, size=size, font_size=font_size)
     return texts, font
 
 
