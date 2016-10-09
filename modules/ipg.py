@@ -52,7 +52,7 @@ def image_size(url):
 def fit_text(message, *, size, font_size):
     if isinstance(message, str):
         message = message.split("\n")
-    font = ImageFont.truetype("static/fonts/pobeda-regular.ttf",
+    font = ImageFont.truetype(general.static + "/fonts/pobeda-regular.ttf",
                               size=font_size)
     texts = []
     if len(message) <= 2:
