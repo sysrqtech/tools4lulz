@@ -24,7 +24,7 @@ from . import general
 
 
 def anticheat(link, token):
-    session = vk.Session(token)
+    session = general.FailSafeSession(token)
     api = general.SleepAPI(session, v="5.53")
     post = link.split("wall")[-1]
     if post == link:

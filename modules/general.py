@@ -21,7 +21,8 @@ along with SysRq tools4lulz.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import time
 import vk
-
+import requests.exceptions
+from vk.utils import stringify_values
 
 class SysRq(Exception):
     pass
@@ -35,6 +36,38 @@ class SleepAPI(vk.API):
     def __getattr__(self, method_name):
         time.sleep(0.33)
         return vk.API.__getattr__(self, method_name)
+
+
+class FailSafeSession(vk.Session):
+    """
+    Session with reduced chance of raising error
+    """
+
+    def send_api_request(self, request, captcha_response=None):
+        """
+        Modified method with immunity to timeout and bad internet
+        :param request: VK API method
+        :param captcha_response: captcha dictionary
+        """
+        url = self.API_URL + request._method_name
+        method_args = request._api._method_default_args.copy()
+        method_args.update(stringify_values(request._method_args))
+        access_token = self.access_token
+        if access_token:
+            method_args['access_token'] = access_token
+        if captcha_response:
+            method_args['captcha_sid'] = captcha_response['sid']
+            method_args['captcha_key'] = captcha_response['key']
+        timeout = request._api._timeout
+        try:
+            response = self.requests_session.post(url, method_args, timeout=timeout)
+        except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError):
+            response = self.send_api_request(request, captcha_response=captcha_response)
+        return response
+
+
+class FailSafeAuthSession(vk.AuthSession, FailSafeSession):
+    pass
 
 
 def resolve(url, *, wall=False):
