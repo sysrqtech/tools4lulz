@@ -87,7 +87,7 @@ if not app.debug:
 # registering modules
 app.register_blueprint(server.server_view, static_folder=app.static_folder)
 app.register_blueprint(banhammer.banhammer_view, url_prefix="/banhammer", static_folder=app.static_folder)
-app.register_blueprint(vk_utils.vk_view, url_prefix="/vk", static_folder=app.static_folder)
+# app.register_blueprint(vk_utils.vk_view, url_prefix="/vk", static_folder=app.static_folder)
 app.register_blueprint(ipg.ipg_view, url_prefix="/ipg", static_folder=app.static_folder)
 
 
